@@ -1,0 +1,23 @@
+.attendance-page{
+    /* z-index: 1000; */
+    padding: 20px;
+}
+.attendance-page h1{
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+.attendance-page button{
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.attendance-page button:hover{
+    background-color: #0056b3;
+}
+.toggle{
+    margin-top: 5%;
+}

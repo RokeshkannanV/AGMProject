@@ -1,0 +1,13 @@
+.another-heading {
+    position: absolute;
+    text-align: justify;
+    z-index: 500;
+    margin: 0;
+    padding-bottom: 20%;
+    text-decoration: underline;
+    font-size: 30px;
+}
+.table-wrapper {
+    padding: 4rem;
+    /* margin-top: 2rem; */
+}
