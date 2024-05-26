@@ -1,0 +1,76 @@
+.studentname{
+    text-align: center;
+    z-index: 1000;
+    position: relative;
+    margin-top: 10%; 
+}
+.cstyle{
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    justify-content: center;
+    align-items: center;
+
+}
+.yet-another-heading {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-decoration: underline;
+}
+
+.form-control{
+    display: flex;
+    margin-bottom: 1rem;
+}
+.form-control label{
+    flex: 1;
+    font-weight: bold;
+    margin-right: 1rem;
+}
+.form-control input{
+    flex: 2;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 2px solid #ccc;
+}
+.btn{
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    background-color: #f7cd10;
+    color: black;
+    border: none;
+    cursor: pointer;
+    margin-right: 1rem;
+}
+.btn:hover{
+    background-color: rgb(187, 1, 243);
+}
+.table-contaier{
+    width: 100%;
+}
+.table-contaier table{
+    width: 100%;
+    border-collapse: collapse;
+    justify-content: center;
+    align-items: center;
+}
+.table-contaier th,td{
+    border: 3px solid #eef107;
+    padding: 8px;
+    text-align: left;
+}
+.table-contaier th{
+    background-color: #2808da;
+    color: #eef107;
+}
+.table-wrapper{
+    display: flex;
+    justify-content: center;
+}
+.table-wrapper table{
+    width: 100%;
+    margin-top: 2rem;
+}
+.table-wrapper table tbody tr td{
+    text-align: center;
+}
