@@ -24,14 +24,10 @@
     ]
   },
   "storage": {
-    "rules": "storage.js"
+    "rules": "storageRules"
   },
   "firestore": {
-    "rules": "firestore.js",
-    "indexes": "Firestoreindex.js"
-  },
-  "database": {
-    "rules": "firebase.js"
-  },
-  "extensions": {}
+    "rules": "firebaseRules",
+    "indexes": "firebaseFirestore"
+  }
 }

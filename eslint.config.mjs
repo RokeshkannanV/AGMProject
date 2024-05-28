@@ -1,8 +1,5 @@
 import globals from "globals";
-// import pluginJs from "eslint-plugin-eslint";
-
-import pluginReactConfig from "eslint-plugin-react";
-
+import pluginReactConfig from "eslint-plugin-react/configs/recommended.js";
 import { fixupConfigRules } from "@eslint/compat";
 
 export default {
@@ -19,12 +16,9 @@ export default {
         node: true,
       },
       globals: globals.browser,
-      plugins: ["@eslint/eslint-plugin"],
-      extends: [
-        "plugin:@eslint/eslint-plugin/recommended",
-        "plugin:react/recommended",
-      ],
-      rules: fixupConfigRules(pluginReactConfig.recommended),
+      plugins: ["eslint-plugin-react"],
+      extends: ["eslint:recommended", "plugin:react/recommended"],
+      rules: fixupConfigRules(pluginReactConfig),
     },
   ],
 };

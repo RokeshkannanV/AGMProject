@@ -1,5 +1,7 @@
 {
+
   "name": "firstagaram",
+
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -21,6 +23,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+
     "eject": "react-scripts eject",
     "lint": "eslint ."
   },
@@ -32,8 +35,11 @@
     "env": {
       "browser": true,
       "node": true
-    }
+    },
+
+    "eject": "react-scripts eject"
   },
+
   "browserslist": {
     "production": [
       ">0.2%",
@@ -63,5 +69,10 @@
   "keywords": [
     "Agaram",
     "Web_app"
-  ]
-}
+  ],
+
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1"
+  }
+
