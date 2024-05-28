@@ -38,12 +38,12 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const StudentAdd = () => {
-  const [name, setName] = useState();
-  const [age, setAge] = useState();
-  const [email, setEmail] = useState();
-  const [number, setNumber] = useState();
-  const [altNumber, setAltNumber] = useState();
-  const [batch, setBatch] = useState();
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [email, setEmail] = useState("");
+  const [number, setNumber] = useState("");
+  const [altNumber, setAltNumber] = useState("");
+  const [batch, setBatch] = useState("");
   const [students, setStudents] = useState([]);
   const [editingStudent, setEditingStudent] = useState(null);
 

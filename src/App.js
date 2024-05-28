@@ -10,14 +10,14 @@ import StudentAdd from "./pagess/StudentAdd";
 import AttendancePage from "./pagess/AttendancePage";
 import DocumentPage from "./pagess/DocumentPage";
 
-function App({ students }) {
+function App() {
   return (
     <AuthProvider>
       <div>
         <Header />
         <Routes>
           {/* <Route path="/" element={<Register/>}/> */}
-          <Route path="/register" element={<Register />} />
+          <Route path="" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
           <Route path="/firebasecloud" element={<FirebaseCloud />} />

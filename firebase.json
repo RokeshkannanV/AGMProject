@@ -16,7 +16,7 @@
     }
   ],
   "hosting": {
-    "public": "y",
+    "public": "build",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -24,10 +24,14 @@
     ]
   },
   "storage": {
-    "rules": "storageRules"
+    "rules": "storage.js"
   },
   "firestore": {
-    "rules": "firebaseRules",
-    "indexes": "firebaseFirestore"
-  }
+    "rules": "firestore.js",
+    "indexes": "Firestoreindex.js"
+  },
+  "database": {
+    "rules": "firebase.js"
+  },
+  "extensions": {}
 }

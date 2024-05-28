@@ -1,24 +1,21 @@
-export default {
-  settings: {
-    react: {
-      version: "detect",
-    },
-  },
+/* eslint-env node */
+
+module.exports = {
+  root: true,
   env: {
     node: true,
-    
-    // Add functions environment for Firebase Cloud Functions
-    functions: true,
   },
   parserOptions: {
-    ecmaVersion: 2021,
-    sourceType: "module",
+    ecmaVersion: 2018,
   },
   extends: ["eslint:recommended", "google"],
   rules: {
     "no-restricted-globals": ["error", "name", "length"],
     "prefer-arrow-callback": "error",
     quotes: ["error", "double", { allowTemplateLiterals: true }],
+    "quote-props": ["error", "consistent"],
+    "object-curly-spacing": ["error", "never"],
+    "require-jsdoc": 0, // Disable Google's requirement for JSDoc comments
   },
   overrides: [
     {
@@ -30,9 +27,9 @@ export default {
     },
   ],
   globals: {
-    // Set Node.js globals as readonly
-    require: "readonly",
-    module: "readonly",
-    exports: "writable",
+   // Define 'module' as a global variable
+    module: true,
+    require: true,
+    exports: true,
   },
 };

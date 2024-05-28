@@ -17,7 +17,7 @@ const Header = () => {
                     :
                     <>
                         <Link className='text-xl text-blue-600 underline' to={'/login'}>Login</Link>
-                        <Link className='text-xl text-blue-600 underline' to={'/register'}>$ Register New Account</Link>
+                        <Link className='text-xl text-blue-600 underline' to={''}>$ Register New Account</Link>
                     </>
             }
 

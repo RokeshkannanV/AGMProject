@@ -1,18 +1,20 @@
 import React from "react";
 import "../pagess/StudentTable.css";
 
-const StudentTable = ({ students, isAdmin, handlePresent, handleAbsent }) => {
-  const handlePresentClick = (studentId) => {
+const StudentTable = ({ students, isAdmin }) => {
+  const handlePresentClick = () => {
     if (isAdmin) {
-      handlePresent(studentId);
+      // handlePresent(studentId);
+      alert("Student Marked Present")
     } else {
       alert("Only Admins can mark attendance");
     }
   };
 
-  const handleAbsentClick = (studentId, altNumber) => {
+  const handleAbsentClick = () => {
     if (isAdmin) {
-      handleAbsent(studentId, altNumber);
+      // handleAbsent(studentId, altNumber);
+      alert("Student marked as absent")
     } else {
       alert("Only Admins can mark attendance");
     }
