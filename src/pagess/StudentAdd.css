@@ -33,13 +33,22 @@
     border: 2px solid #ccc;
 }
 .btn{
-    padding: 0.5rem 1rem;
+    /* padding: 0.5rem 1rem;
     border-radius: 5px;
-    background-color: #f7cd10;
+    background-color: #fffb10;
     color: black;
     border: none;
     cursor: pointer;
-    margin-right: 1rem;
+    margin-right: 1rem; */
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 10px; /* Space between buttons */
+    transition: background-color 0.3s ease; /* Smooth transition for hover */
+    width: auto;
 }
 .btn:hover{
     background-color: rgb(187, 1, 243);

@@ -2,10 +2,11 @@
 import React, { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc, getDocs, updateDoc, doc } from "firebase/firestore";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate for navigation
-import { FaChevronLeft } from 'react-icons/fa'; // Import chevron left icon
-import "../pagess/StudentTable.css";
-import stImage from "../pagess/Agaram_logo-removebg-preview.png"; // Make sure to import your image
+import { getAuth } from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom"; 
+import { FaChevronLeft } from 'react-icons/fa'; 
+import Modal from '../modelc/Model';
+import "../pagess/StudentTable.css"; 
 
 const firebaseConfig = {
   apiKey: "AIzaSyDpKf7LcVyz8uPbhHzojfVq7WmbSE_Xkts",
@@ -19,9 +20,10 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 const StudentTable = () => {
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
   const [students, setStudents] = useState([]);
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
@@ -32,34 +34,61 @@ const StudentTable = () => {
   const [college, setCollege] = useState("");
   const [parentNumber, setParentNumber] = useState("");
   const [editingStudent, setEditingStudent] = useState(null);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+
+  const fetchStudents = async () => {
+    const studentCollection = collection(db, "aluminis");
+    const studentSnapshots = await getDocs(studentCollection);
+    const studentList = studentSnapshots.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setStudents(studentList);
+  };
 
   useEffect(() => {
-    const fetchStudents = async () => {
-      const studentCollection = collection(db, "aluminis");
-      const studentSnapshots = await getDocs(studentCollection);
-      const studentList = studentSnapshots.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setStudents(studentList);
-    };
     fetchStudents();
   }, []);
 
+  useEffect(() => {
+    if (editingStudent) {
+      setName(editingStudent.name);
+      setAge(editingStudent.age);
+      setEmail(editingStudent.email);
+      setNumber(editingStudent.number);
+      setBatch(editingStudent.batch);
+      setDepartment(editingStudent.department);
+      setCollege(editingStudent.college);
+      setParentNumber(editingStudent.parentNumber);
+    } else {
+      resetForm();
+    }
+  }, [editingStudent]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const user = auth.currentUser;
+
     if (editingStudent) {
-      await updateDoc(doc(db, "aluminis", editingStudent.id), {
-        name,
-        age,
-        email,
-        number,
-        batch,
-        department,
-        college,
-        parentNumber,
-      });
-      setEditingStudent(null);
+      if (editingStudent.email.trim().toLowerCase() === user.email.trim().toLowerCase()) {
+        await updateDoc(doc(db, "aluminis", editingStudent.id), {
+          name,
+          age,
+          email,
+          number,
+          batch,
+          department,
+          college,
+          parentNumber,
+        });
+        setEditingStudent(null);
+        setModalMessage("Student data updated successfully!");
+        setModalOpen(true); // Open modal for success message
+      } else {
+        setModalMessage("You can only edit your own data.");
+        setModalOpen(true);
+      }
     } else {
       await addDoc(collection(db, "aluminis"), {
         name,
@@ -71,8 +100,12 @@ const StudentTable = () => {
         college,
         parentNumber,
       });
+      setModalMessage("Student added successfully!");
+      setModalOpen(true); // Open modal for success message
     }
+
     resetForm();
+    fetchStudents();
   };
 
   const resetForm = () => {
@@ -86,13 +119,22 @@ const StudentTable = () => {
     setParentNumber("");
   };
 
+  const handleEditClick = (student) => {
+    const user = auth.currentUser;
+    if (user && student.email.trim().toLowerCase() === user.email.trim().toLowerCase()) {
+      setEditingStudent(student);
+    } else {
+      setModalMessage("You can only edit your own data.");
+      setModalOpen(true);
+    }
+  };
+
   return (
     <div className="student-table">
       <div className="header">
         <button className="back-button" onClick={() => navigate("/studentadd")}>
           <FaChevronLeft /> Back
         </button>
-        {/* <img src={stImage} alt="Logo" className="logo" />  */}
       </div>
       <h1 className="text-center">Student List</h1>
       <form onSubmit={handleSubmit}>
@@ -181,12 +223,13 @@ const StudentTable = () => {
         </div>
       </form>
 
+      <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} message={modalMessage} />
+
       {students.length > 0 ? (
         <table>
           <thead>
             <tr>
               <th>Name</th>
-              <th>Age</th>
               <th>Email</th>
               <th>Mobile Number</th>
               <th>Batch</th>
@@ -200,7 +243,6 @@ const StudentTable = () => {
             {students.map((student) => (
               <tr key={student.id}>
                 <td>{student.name}</td>
-                <td>{student.age}</td>
                 <td>{student.email}</td>
                 <td>{student.number}</td>
                 <td>{student.batch}</td>
@@ -208,7 +250,9 @@ const StudentTable = () => {
                 <td>{student.college}</td>
                 <td>{student.parentNumber}</td>
                 <td>
-                  <button onClick={() => setEditingStudent(student)}>Edit</button>
+                  <button onClick={() => handleEditClick(student)}>
+                    Edit
+                  </button>
                 </td>
               </tr>
             ))}

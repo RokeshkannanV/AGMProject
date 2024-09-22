@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import "../pagess/StudentAdd.css";
 import { FaChevronLeft } from 'react-icons/fa';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import studentImage from "../pagess/Agaram_logo-removebg-preview.png";
 import { initializeApp } from "firebase/app";
 import {
@@ -14,7 +14,8 @@ import {
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
-import { Link } from "react-router-dom";
+import { getAuth } from "firebase/auth";
+import Modal from '../modelc/Model'; // Import the Modal component
 
 const firebaseConfig = {
   apiKey: "AIzaSyDpKf7LcVyz8uPbhHzojfVq7WmbSE_Xkts",
@@ -28,18 +29,24 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 const StudentAdd = () => {
   const navigate = useNavigate();
+  const user = auth.currentUser;
+  const userEmail = user ? user.email : null;
+
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [email, setEmail] = useState("");
   const [number, setNumber] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [batch, setBatch] = useState("");
-  const [type, setType] = useState("Hardware"); // Default type
+  const [type, setType] = useState("Hardware");
   const [students, setStudents] = useState([]);
   const [editingStudent, setEditingStudent] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -97,28 +104,37 @@ const StudentAdd = () => {
           type,
         };
         setStudents((prevStudents) => [...prevStudents, newStudent]);
-        setName("");
-        setAge("");
-        setEmail("");
-        setNumber("");
-        setCompanyName("");
-        setBatch("");
-        setType("Hardware");
+        resetForm();
       }
     } catch (error) {
-      console.error("Error adding student", error);
+      console.error("Error adding/updating student", error);
     }
   };
 
+  const resetForm = () => {
+    setName("");
+    setAge("");
+    setEmail("");
+    setNumber("");
+    setCompanyName("");
+    setBatch("");
+    setType("Hardware");
+  };
+
   const handleEdit = (student) => {
-    setName(student.name);
-    setAge(student.age);
-    setEmail(student.email);
-    setNumber(student.number);
-    setCompanyName(student.companyName);
-    setBatch(student.batch);
-    setType(student.type);
-    setEditingStudent(student);
+    if (student.email === userEmail) {
+      setName(student.name);
+      setAge(student.age);
+      setEmail(student.email);
+      setNumber(student.number);
+      setCompanyName(student.companyName);
+      setBatch(student.batch);
+      setType(student.type);
+      setEditingStudent(student);
+    } else {
+      setModalMessage("You can only edit your own data.");
+      setIsModalOpen(true);
+    }
   };
 
   const handleDelete = async (id) => {
@@ -136,11 +152,11 @@ const StudentAdd = () => {
         <img src={studentImage} alt="Student" className="w-24 h-24" />
       </div>
       <button className="back-button" onClick={() => navigate("/home")}>
-          <FaChevronLeft /> Back
-        </button>
+        <FaChevronLeft /> Back
+      </button>
       <div className="studentname">
         <div className="cstyle table-container">
-          <h1 className="yet-another-heading">MOM Helping Platform(Alumini's)</h1>
+          <h1 className="yet-another-heading">MOM Helping Platform(Alumni's)</h1>
           <form onSubmit={handleSubmit}>
             <div className="form-control">
               <label htmlFor="name">Name :</label>
@@ -262,9 +278,7 @@ const StudentAdd = () => {
                       <td>{student.type}</td>
                       <td>
                         <button onClick={() => handleEdit(student)}>Edit</button>
-                        {/* <button onClick={() => handleDelete(student.id)}>
-                          Delete
-                        </button> */}
+                        {/* <button onClick={() => handleDelete(student.id)}>Delete</button> */}
                       </td>
                     </tr>
                   ))}
@@ -273,10 +287,11 @@ const StudentAdd = () => {
             </div>
           )}
           <button className="btn">
-          <Link to="/attendance">Go to Student List</Link>
+            <Link to="/attendance">Go to Student List</Link>
           </button>
         </div>
       </div>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} message={modalMessage} />
     </>
   );
 };

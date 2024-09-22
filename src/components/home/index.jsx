@@ -7,12 +7,18 @@ import logo from "../../pagess/Agaram_logo-removebg-preview.png";
 const Home = () => {
   const { currentUser } = useAuth();
 
+  // Utility function to extract and format username from email
+  const getUsernameFromEmail = (email) => {
+    const username = email.split("@")[0]; // Get the part before the "@" symbol
+    return username.charAt(0).toUpperCase() + username.slice(1); // Capitalize the first letter
+  };
+
   return (
     <>
       <div className="text-2xl font-bold pt-14 py-5 text-center">
         Hiiii{" "}
-        {currentUser.displayName ? currentUser.displayName : currentUser.email},
-        you are logged in Successfully !!
+        {currentUser.displayName ? currentUser.displayName : getUsernameFromEmail(currentUser.email)},
+        you are logged in Successfully!!
       </div>
       <div className="flex justify-center">
         <img src={logo} alt="Logo" className="w-24 h-24" />
@@ -27,8 +33,7 @@ const Home = () => {
             shadow-xl"
       >
         <h1 className="text-center text-2xl">அகரம் உறுதிமொழி !!!!</h1>
-          {/* Your text here */}
-          <h3 className="text-center py-2">
+        <h3 className="text-center py-2">
           கல்வியே எங்கள் ஆயுதம். கல்வியே எங்கள் கேடயம். கல்வியே எங்களின் சமூகப்
           பாதுகாப்பு. கல்வி வெளிச்சம் தேடி அலைந்தோம். நல்லோர்கள் கை கொடுத்தனர்,
           வெளிச்சம் மட்டும் தராமல் கையில் விளக்கையே தந்திருக்கிறது அகரம். கல்வி
@@ -53,4 +58,3 @@ const Home = () => {
 };
 
 export default Home;
-
