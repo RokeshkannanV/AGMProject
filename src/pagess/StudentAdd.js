@@ -15,7 +15,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import Modal from '../modelc/Model'; // Import the Modal component
+import Modal from '../modelc/Model';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDpKf7LcVyz8uPbhHzojfVq7WmbSE_Xkts",
@@ -66,40 +66,46 @@ const StudentAdd = () => {
 
     try {
       if (editingStudent) {
-        await updateDoc(doc(db, "students", editingStudent.id), {
-          name,
-          age,
-          email,
-          number,
-          companyName,
-          batch,
-          type,
-        });
-        setStudents((prevStudents) =>
-          prevStudents.map((student) =>
-            student.id === editingStudent.id
-              ? { ...student, name, age, email, number, companyName, batch, type }
-              : student
-          )
-        );
-        setEditingStudent(null);
+        // Only update if the email matches the logged-in user
+        if (editingStudent.email === userEmail) {
+          await updateDoc(doc(db, "students", editingStudent.id), {
+            name,
+            age: age || editingStudent.age,
+            email: userEmail, // Update to logged-in user's email
+            number,
+            companyName: companyName || editingStudent.companyName,
+            batch,
+            type,
+          });
+          setStudents((prevStudents) =>
+            prevStudents.map((student) =>
+              student.id === editingStudent.id
+                ? { ...student, name, age: age || editingStudent.age, email: userEmail, number, companyName: companyName || editingStudent.companyName, batch, type }
+                : student
+            )
+          );
+          setEditingStudent(null);
+        } else {
+          setModalMessage("You can only edit your own data.");
+          setIsModalOpen(true);
+        }
       } else {
         const newStudentRef = await addDoc(collection(db, "students"), {
           name,
-          age,
-          email,
           number,
-          companyName,
           batch,
           type,
+          age: "", // Initially empty
+          email: userEmail, // Set to logged-in user's email
+          companyName: "", // Initially empty
         });
         const newStudent = {
           id: newStudentRef.id,
           name,
-          age,
-          email,
+          age: "",
+          email: userEmail,
           number,
-          companyName,
+          companyName: "",
           batch,
           type,
         };
@@ -122,10 +128,11 @@ const StudentAdd = () => {
   };
 
   const handleEdit = (student) => {
+    // Allow editing only if the email matches the logged-in user
     if (student.email === userEmail) {
       setName(student.name);
       setAge(student.age);
-      setEmail(student.email);
+      setEmail(student.email); // Set current email
       setNumber(student.number);
       setCompanyName(student.companyName);
       setBatch(student.batch);
@@ -170,28 +177,6 @@ const StudentAdd = () => {
               />
             </div>
             <div className="form-control">
-              <label htmlFor="age">Age :</label>
-              <input
-                type="text"
-                placeholder="Age"
-                id="age"
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-control">
-              <label htmlFor="email">Email :</label>
-              <input
-                type="text"
-                placeholder="Email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-control">
               <label htmlFor="number">Mobile Number :</label>
               <input
                 type="text"
@@ -203,6 +188,38 @@ const StudentAdd = () => {
               />
             </div>
             <div className="form-control">
+              <label htmlFor="batch">Batch :</label>
+              <input
+                type="text"
+                placeholder="Batch"
+                id="batch"
+                value={batch}
+                onChange={(e) => setBatch(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-control">
+              <label htmlFor="age">Age :</label>
+              <input
+                type="text"
+                placeholder="Age"
+                id="age"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+              />
+            </div>
+            <div className="form-control">
+              <label htmlFor="email">Email :</label>
+              <input
+                type="email"
+                placeholder="Email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled // Email is set automatically and should not be edited
+              />
+            </div>
+            <div className="form-control">
               <label htmlFor="companyName">Company Name :</label>
               <input
                 type="text"
@@ -210,7 +227,6 @@ const StudentAdd = () => {
                 id="companyName"
                 value={companyName}
                 onChange={(e) => setCompanyName(e.target.value)}
-                required
               />
             </div>
             <div className="form-control">
@@ -236,22 +252,11 @@ const StudentAdd = () => {
                 </label>
               </div>
             </div>
-            <div className="form-control">
-              <label htmlFor="batch">Batch :</label>
-              <input
-                type="text"
-                placeholder="Batch"
-                id="batch"
-                value={batch}
-                onChange={(e) => setBatch(e.target.value)}
-                required
-              />
-            </div>
             <button type="submit" className="btn">
-              {editingStudent ? "Update Student" : "Add Student"}
+              {editingStudent ? "Update Alumni" : "Add Alumni"}
             </button>
           </form>
-          {students && students.length > 0 && (
+          {students.length > 0 && (
             <div className="table-wrapper">
               <table>
                 <thead>
