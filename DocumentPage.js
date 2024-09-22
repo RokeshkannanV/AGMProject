@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { storage } from "../firebase/firebase";
-import { ref, uploadBytes, getDownloadURL, listAll } from "firebase/storage";
-import { v4 as uuidv4 } from "uuid";
+import React, {useState, useEffect} from "react";
+import {storage} from "../firebase/firebase";
+import {ref, uploadBytes, getDownloadURL, listAll} from "firebase/storage";
+import {v4 as uuidv4} from "uuid";
 import "../pagess/DocumentPage.css";
 
 function DocumentPage() {
@@ -16,19 +16,19 @@ function DocumentPage() {
         setUploading(true);
         const fileRef = ref(storage, `files/${uuidv4()}_${fileUpload.name}`);
         uploadBytes(fileRef, fileUpload)
-            .then((snapshot) => {
-                getDownloadURL(snapshot.ref).then((url) => {
-                    setFilePreviews((prevPreviews) => [
-                        ...prevPreviews,
-                        { url, type: getFileType(fileUpload.type), name: fileUpload.name },
-                    ]);
-                    setUploading(false);
-                });
-            })
-            .catch((error) => {
-                console.error("Error uploading file:", error);
-                setUploading(false);
-            });
+                    .then((snapshot) => {
+                        getDownloadURL(snapshot.ref).then((url) => {
+                            setFilePreviews((prevPreviews) => [
+                                ...prevPreviews,
+                                    {url, type: getFileType(fileUpload.type), name: fileUpload.name},
+                                ]);
+                                setUploading(false);
+                        });
+                    })
+                    .catch((error) => {
+                        console.error("Error uploading file:", error);
+                        setUploading(false);
+                    });
     };
 
     const getFileType = (fileType) => {
@@ -45,21 +45,21 @@ function DocumentPage() {
 
     useEffect(() => {
         listAll(filesListRef)
-            .then((res) => {
-                const previewsPromises = res.items.map((itemRef) =>
-                    getDownloadURL(itemRef).then((url) => ({
-                        url,
-                        type: getFileType(itemRef.contentType),
-                        name: itemRef.name.split("_")[1],
-                    }))
-                );
-                Promise.all(previewsPromises).then((previews) => {
-                    setFilePreviews(previews);
-                });
-            })
-            .catch((error) => {
-                console.error("Error listing files:", error);
-            });
+                    .then((res) => {
+                        const previewsPromises = res.items.map((itemRef) =>
+                            getDownloadURL(itemRef).then((url) => ({
+                            url,
+                            type: getFileType(itemRef.contentType),
+                            name: itemRef.name.split("_")[1],
+                            })),
+                        );
+                        Promise.all(previewsPromises).then((previews) => {
+                            setFilePreviews(previews);
+                        });
+                    })
+                    .catch((error) => {
+                        console.error("Error listing files:", error);
+                    });
     }, [filesListRef]);
 
     return (

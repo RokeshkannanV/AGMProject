@@ -1,8 +1,9 @@
+/* eslint-disable */
 import React, { useState, useEffect } from "react";
-// import { useState } from "react";
-// import {app} from "../../src/firebase/firebase";
-// import "../../src/firebase/firebase";
 import "../pagess/StudentAdd.css";
+import { FaChevronLeft } from 'react-icons/fa';
+import { useNavigate } from "react-router-dom";
+import studentImage from "../pagess/Agaram_logo-removebg-preview.png";
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
@@ -13,18 +14,8 @@ import {
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
-// import AttendancePage from "./AttendancePage";
 import { Link } from "react-router-dom";
-// import { addDoc, collection } from "firebase/firestore";
-// import { db } from "../firebase/firebase";
-// import {
-//   doc,
-//   addDoc,
-//   collection,
-//   updateDoc,
-//   deleteDoc,
-//   getDocs,
-// } from "firebase/firestore";
+
 const firebaseConfig = {
   apiKey: "AIzaSyDpKf7LcVyz8uPbhHzojfVq7WmbSE_Xkts",
   authDomain: "firstagm-b0094.firebaseapp.com",
@@ -34,16 +25,19 @@ const firebaseConfig = {
   appId: "1:37339568694:web:746209597a08606ea8d697",
   measurementId: "G-NT1Z9B5XHZ",
 };
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 const StudentAdd = () => {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [email, setEmail] = useState("");
   const [number, setNumber] = useState("");
-  const [altNumber, setAltNumber] = useState("");
+  const [companyName, setCompanyName] = useState("");
   const [batch, setBatch] = useState("");
+  const [type, setType] = useState("Hardware"); // Default type
   const [students, setStudents] = useState([]);
   const [editingStudent, setEditingStudent] = useState(null);
 
@@ -59,6 +53,7 @@ const StudentAdd = () => {
     };
     fetchStudents();
   }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -68,12 +63,15 @@ const StudentAdd = () => {
           name,
           age,
           email,
+          number,
+          companyName,
           batch,
+          type,
         });
         setStudents((prevStudents) =>
           prevStudents.map((student) =>
             student.id === editingStudent.id
-              ? { ...student, name, age, email, number, altNumber, batch }
+              ? { ...student, name, age, email, number, companyName, batch, type }
               : student
           )
         );
@@ -84,8 +82,9 @@ const StudentAdd = () => {
           age,
           email,
           number,
-          altNumber,
+          companyName,
           batch,
+          type,
         });
         const newStudent = {
           id: newStudentRef.id,
@@ -93,30 +92,35 @@ const StudentAdd = () => {
           age,
           email,
           number,
-          altNumber,
+          companyName,
           batch,
+          type,
         };
         setStudents((prevStudents) => [...prevStudents, newStudent]);
         setName("");
         setAge("");
         setEmail("");
         setNumber("");
-        setAltNumber("");
+        setCompanyName("");
         setBatch("");
+        setType("Hardware");
       }
     } catch (error) {
       console.error("Error adding student", error);
     }
   };
+
   const handleEdit = (student) => {
     setName(student.name);
     setAge(student.age);
     setEmail(student.email);
     setNumber(student.number);
-    setAltNumber(student.altNumber);
+    setCompanyName(student.companyName);
     setBatch(student.batch);
+    setType(student.type);
     setEditingStudent(student);
   };
+
   const handleDelete = async (id) => {
     try {
       await deleteDoc(doc(db, "students", id));
@@ -125,119 +129,155 @@ const StudentAdd = () => {
       console.error("Error deleting student", error);
     }
   };
+
   return (
-    <div className="studentname">
-      <div className="cstyle table-container">
-        <h1 className="yet-another-heading">MOM Student Attendance List</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="form-control">
-            <label htmlFor="name">Name :</label>
-            <input
-              type="text"
-              placeholder="Name"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-control">
-            <label htmlFor="age">Age :</label>
-            <input
-              type="text"
-              placeholder="Age"
-              id="age"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-control">
-            <label htmlFor="email">Email :</label>
-            <input
-              type="text"
-              placeholder="Email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-control">
-            <label htmlFor="number">Mobile Number :</label>
-            <input
-              type="text"
-              placeholder="Mobile Number"
-              id="number"
-              value={number}
-              onChange={(e) => setNumber(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-control">
-            <label htmlFor="altNumber">Parent/Guardian Number :</label>
-            <input
-              type="text"
-              placeholder="Parent/Guardian Number"
-              id="altNumber"
-              value={altNumber}
-              onChange={(e) => setAltNumber(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-control">
-            <label htmlFor="batch">Batch :</label>
-            <input
-              type="text"
-              placeholder="Batch"
-              id="batch"
-              value={batch}
-              onChange={(e) => setBatch(e.target.value)}
-              required
-            />
-          </div>
-          <button type="submit" className="btn">
-            {editingStudent ? "Update Student" : "Add Student"}
-          </button>
-        </form>
-        {students && students.length > 0 && (
-          <div className="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Age</th>
-                  <th>Email</th>
-                  <th>Mobile Number</th>
-                  <th>Parent/Guardian Number</th>
-                  <th>Batch</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {students.map((student) => (
-                  <tr key={student.id}>
-                    <td>{student.name}</td>
-                    <td>{student.age}</td>
-                    <td>{student.email}</td>
-                    <td>{student.number}</td>
-                    <td>{student.altNumber}</td>
-                    <td>{student.batch}</td>
-                    <td>
-                      <button onClick={() => handleEdit(student)}>Edit/</button>
-                      <button onClick={() => handleDelete(student.id)}>
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-        <Link to="/attendance">Go to Attendance Page</Link>
+    <>
+      <div className="flex justify-center">
+        <img src={studentImage} alt="Student" className="w-24 h-24" />
       </div>
-    </div>
+      <button className="back-button" onClick={() => navigate("/home")}>
+          <FaChevronLeft /> Back
+        </button>
+      <div className="studentname">
+        <div className="cstyle table-container">
+          <h1 className="yet-another-heading">MOM Helping Platform(Alumini's)</h1>
+          <form onSubmit={handleSubmit}>
+            <div className="form-control">
+              <label htmlFor="name">Name :</label>
+              <input
+                type="text"
+                placeholder="Name"
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-control">
+              <label htmlFor="age">Age :</label>
+              <input
+                type="text"
+                placeholder="Age"
+                id="age"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-control">
+              <label htmlFor="email">Email :</label>
+              <input
+                type="text"
+                placeholder="Email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-control">
+              <label htmlFor="number">Mobile Number :</label>
+              <input
+                type="text"
+                placeholder="Mobile Number"
+                id="number"
+                value={number}
+                onChange={(e) => setNumber(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-control">
+              <label htmlFor="companyName">Company Name :</label>
+              <input
+                type="text"
+                placeholder="Company Name"
+                id="companyName"
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-control">
+              <label>Type :</label>
+              <div>
+                <label>
+                  <input
+                    type="radio"
+                    value="Hardware"
+                    checked={type === "Hardware"}
+                    onChange={() => setType("Hardware")}
+                  />
+                  Hardware
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    value="Software"
+                    checked={type === "Software"}
+                    onChange={() => setType("Software")}
+                  />
+                  Software
+                </label>
+              </div>
+            </div>
+            <div className="form-control">
+              <label htmlFor="batch">Batch :</label>
+              <input
+                type="text"
+                placeholder="Batch"
+                id="batch"
+                value={batch}
+                onChange={(e) => setBatch(e.target.value)}
+                required
+              />
+            </div>
+            <button type="submit" className="btn">
+              {editingStudent ? "Update Student" : "Add Student"}
+            </button>
+          </form>
+          {students && students.length > 0 && (
+            <div className="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                    <th>Email</th>
+                    <th>Mobile Number</th>
+                    <th>Company Name</th>
+                    <th>Batch</th>
+                    <th>Type</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {students.map((student) => (
+                    <tr key={student.id}>
+                      <td>{student.name}</td>
+                      <td>{student.age}</td>
+                      <td>{student.email}</td>
+                      <td>{student.number}</td>
+                      <td>{student.companyName}</td>
+                      <td>{student.batch}</td>
+                      <td>{student.type}</td>
+                      <td>
+                        <button onClick={() => handleEdit(student)}>Edit</button>
+                        {/* <button onClick={() => handleDelete(student.id)}>
+                          Delete
+                        </button> */}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+          <button className="btn">
+          <Link to="/attendance">Go to Student List</Link>
+          </button>
+        </div>
+      </div>
+    </>
   );
 };
 

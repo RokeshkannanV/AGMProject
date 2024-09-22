@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   settings: {
     react: {
       version: "detect",
@@ -6,9 +6,6 @@ export default {
   },
   env: {
     node: true,
-    
-    // Add functions environment for Firebase Cloud Functions
-    functions: true,
   },
   parserOptions: {
     ecmaVersion: 2021,
@@ -19,6 +16,7 @@ export default {
     "no-restricted-globals": ["error", "name", "length"],
     "prefer-arrow-callback": "error",
     quotes: ["error", "double", { allowTemplateLiterals: true }],
+    "linebreak-style": ["error", "windows"],
   },
   overrides: [
     {
@@ -34,5 +32,9 @@ export default {
     require: "readonly",
     module: "readonly",
     exports: "writable",
+    // Add globals for Firebase Cloud Functions
+    firebase: true,
+    admin: true,
+    functions: true,
   },
 };

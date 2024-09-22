@@ -83,3 +83,38 @@ button:hover {
   font-size: 24px;
   margin-right: 5px;
 }
+.calendar-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.calendar {
+  width: 100%;
+  max-width: 600px; /* Adjust max width as needed */
+}
+.current-date {
+  background-color: #ffcc00; /* Highlight color */
+  border-radius: 10%; /* Make it a circle */
+  color: black; /* Text color */
+}
+.back-button {
+  margin: 20px;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.back-button:hover {
+  background-color: #0056b3;
+}
+
+.back-button svg {
+  margin-right: 5px;
+}

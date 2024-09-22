@@ -1,10 +1,13 @@
+/* eslint-disable */
 import React from "react";
-import ReactDOM from "react-dom/client";
+// import ReactDOM from "react-dom/client";
+import ReactDOM from 'react-dom';
+
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import "./index.css";
 import {initializeApp} from "firebase/app"; // Import Firebase core module
-
+import { createRoot } from 'react-dom/client';
 // Initialize Firebase with your configuration
 const firebaseConfig = {
   // Your Firebase config object

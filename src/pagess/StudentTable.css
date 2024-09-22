@@ -1,13 +1,141 @@
-.another-heading {
-    position: absolute;
-    text-align: justify;
-    z-index: 500;
-    margin: 0;
-    padding-bottom: 20%;
-    text-decoration: underline;
-    font-size: 30px;
+.student-table {
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 800px; /* Set a maximum width for the container */
 }
-.table-wrapper {
-    padding: 4rem;
-    /* margin-top: 2rem; */
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-control {
+  margin-bottom: 15px;
+}
+
+.form-control label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"] {
+  width: 100%; /* Make inputs full width */
+  padding: 8px;
+  box-sizing: border-box; /* Include padding in total width */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.btn {
+  background-color: #007bff; /* Bootstrap primary color */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 10px; /* Add margin between buttons */
+  transition: background-color 0.3s ease; /* Smooth transition for hover */
+}
+
+.btn:hover {
+  background-color: #0056b3; /* Darker shade for hover */
+}
+
+table {
+  width: 100%; /* Full width */
+  border-collapse: collapse; /* Remove spacing between cells */
+  margin: 10px 0; /* Center the table */
+  border: 2px solid hsl(58, 100%, 51%) !important; /* Set a solid border for the table */
+}
+
+th,
+td {
+  border: 1px solid hsl(58, 100%, 51%); /* Set the border color for table cells */
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2; /* Light grey background for header */
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9; /* Zebra striping for rows */
+}
+
+tr:hover {
+  background-color: #f1f1f1; /* Highlight row on hover */
+}
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+  th, td {
+    font-size: 14px; /* Smaller text on small screens */
+    display: block; /* Stack table cells */
+    width: 100%; /* Full width for stacking */
+    box-sizing: border-box; /* Include padding in total width */
+  }
+
+  th {
+    position: absolute; /* Position headers absolutely */
+    left: -9999px; /* Hide them visually */
+  }
+
+  tr {
+    margin-bottom: 15px; /* Add some space between rows */
+    border: 1px solid hsl(58, 100%, 51%); /* Add border for each row */
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: center; /* Center the buttons horizontally */
+    margin: 20px 0; /* Add some margin above and below the buttons */
+  }
+  
+  .docx {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 10px; /* Space between buttons */
+    transition: background-color 0.3s ease; /* Smooth transition for hover */
+    width: auto; /* Let buttons size according to text */
+  }
+  
+  .btn:hover {
+    background-color: #0056b3; /* Darker shade for hover */
+  }
+  
+}
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px; 
+}
+
+.back-button {
+  position: absolute; /* or fixed if you want it to stay on screen while scrolling */
+  top: 50px; /* Adjust as needed */
+  left: 20px; /* Adjust as needed */
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center; /* Center the icon vertically */
+}
+
+.back-button:hover {
+  background-color: #0056b3;
+}
+
+
+.back-button:hover {
+  background-color: #0056b3;
 }
