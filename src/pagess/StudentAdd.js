@@ -1,8 +1,9 @@
 /* eslint-disable */
 import React, { useState, useEffect } from "react";
-import "../pagess/StudentAdd.css";
+import "./StudentAdd.css";
+import "./StudentTable.css";
 import { FaChevronLeft } from 'react-icons/fa';
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import studentImage from "../pagess/Agaram_logo-removebg-preview.png";
 import { initializeApp } from "firebase/app";
 import {
@@ -49,17 +50,24 @@ const StudentAdd = () => {
   const [modalMessage, setModalMessage] = useState("");
 
   useEffect(() => {
-    const fetchStudents = async () => {
-      const studentCollections = collection(db, "students");
-      const studentsSnapshots = await getDocs(studentCollections);
-      const studentList = studentsSnapshots.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setStudents(studentList);
-    };
     fetchStudents();
   }, []);
+
+  const fetchStudents = async () => {
+    try {
+      const studentCollections = collection(db, "students");
+      const studentsSnapshots = await getDocs(studentCollections);
+      const studentList = studentsSnapshots.docs
+        .map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }))
+        .sort((a, b) => a.batch.localeCompare(b.batch)); // Sort by batch (older batches first)
+      setStudents(studentList);
+    } catch (error) {
+      console.error("Error fetching students:", error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -77,41 +85,26 @@ const StudentAdd = () => {
             batch,
             type,
           });
-          setStudents((prevStudents) =>
-            prevStudents.map((student) =>
-              student.id === editingStudent.id
-                ? { ...student, name, age: age || editingStudent.age, email: userEmail, number, companyName: companyName || editingStudent.companyName, batch, type }
-                : student
-            )
-          );
           setEditingStudent(null);
         } else {
           setModalMessage("You can only edit your own data.");
           setIsModalOpen(true);
         }
       } else {
-        const newStudentRef = await addDoc(collection(db, "students"), {
+        await addDoc(collection(db, "students"), {
           name,
           number,
           batch,
           type,
-          age: "", // Initially empty
+          age, // Use the value from the form
           email: userEmail, // Set to logged-in user's email
-          companyName: "", // Initially empty
+          companyName, // Use the value from the form
         });
-        const newStudent = {
-          id: newStudentRef.id,
-          name,
-          age: "",
-          email: userEmail,
-          number,
-          companyName: "",
-          batch,
-          type,
-        };
-        setStudents((prevStudents) => [...prevStudents, newStudent]);
-        resetForm();
       }
+
+      // After adding or editing, refetch the students to ensure sorting
+      await fetchStudents();
+      resetForm();
     } catch (error) {
       console.error("Error adding/updating student", error);
     }
@@ -231,8 +224,15 @@ const StudentAdd = () => {
             </div>
             <div className="form-control">
               <label>Type :</label>
-              <div>
-                <label>
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap', // Ensures wrapping on small screens
+                  gap: '5px', // Adds space between the radio buttons
+                  justifyContent: 'flex-start', // Aligns items to the start
+                }}
+              >
+                <label style={{ minWidth: '120px' }}>
                   <input
                     type="radio"
                     value="Hardware"
@@ -241,7 +241,7 @@ const StudentAdd = () => {
                   />
                   Hardware
                 </label>
-                <label>
+                <label style={{ minWidth: '120px' }}>
                   <input
                     type="radio"
                     value="Software"
@@ -250,53 +250,92 @@ const StudentAdd = () => {
                   />
                   Software
                 </label>
+                <label style={{ minWidth: '120px' }}>
+                  <input
+                    type="radio"
+                    value="GovtSector"
+                    checked={type === "GovtSector"}
+                    onChange={() => setType("GovtSector")}
+                  />
+                  Govt Sector
+                </label>
+                <label style={{ minWidth: '120px' }}>
+                  <input
+                    type="radio"
+                    value="Entrepreneur"
+                    checked={type === "Entrepreneur"}
+                    onChange={() => setType("Entrepreneur")}
+                  />
+                  Entrepreneur
+                </label>
               </div>
             </div>
-            <button type="submit" className="btn">
+
+            <button
+              type="submit"
+              className="btn1"
+              style={{
+                backgroundColor: "#007bff", // Blue background color
+                color: "white", // White text color
+                padding: "10px 20px", // Padding inside the button for spacing
+                border: "none", // Remove borders
+                borderRadius: "50px", // Rounded corners for the box
+                fontSize: "16px", // Font size
+                cursor: "pointer", // Pointer cursor on hover
+                transition: "background-color 0.3s ease", // Smooth hover effect
+              }}
+            >
               {editingStudent ? "Update Alumni" : "Add Alumni"}
             </button>
           </form>
-          {students.length > 0 && (
-            <div className="table-wrapper">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Age</th>
-                    <th>Email</th>
-                    <th>Mobile Number</th>
-                    <th>Company Name</th>
-                    <th>Batch</th>
-                    <th>Type</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {students.map((student) => (
-                    <tr key={student.id}>
-                      <td>{student.name}</td>
-                      <td>{student.age}</td>
-                      <td>{student.email}</td>
-                      <td>{student.number}</td>
-                      <td>{student.companyName}</td>
-                      <td>{student.batch}</td>
-                      <td>{student.type}</td>
-                      <td>
-                        <button onClick={() => handleEdit(student)}>Edit</button>
-                        {/* <button onClick={() => handleDelete(student.id)}>Delete</button> */}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-          <button className="btn">
-            <Link to="/attendance">Go to Student List</Link>
-          </button>
+
+          <table className="styled-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Mobile Number</th>
+                <th>Batch</th>
+                <th>Age</th>
+                <th>Email</th>
+                <th>Company Name</th>
+                <th>Type</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {students.map((student) => (
+                <tr key={student.id}>
+                  <td>{student.name}</td>
+                  <td>{student.number}</td>
+                  <td>{student.batch}</td>
+                  <td>{student.age}</td>
+                  <td>{student.email}</td>
+                  <td>{student.companyName}</td>
+                  <td>{student.type}</td>
+                  <td>
+                    <button className="btn1" onClick={() => handleEdit(student)}>Edit</button>
+                    {/* <button className="btn1" onClick={() => handleDelete(student.id)}>Delete</button> */}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+<div className="button-group">
+  <button className="btn" onClick={() => navigate("/attendance")}>
+    Go to Student List
+  </button>
+</div>
+
         </div>
       </div>
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} message={modalMessage} />
+
+      {/* Modal for messages */}
+      {isModalOpen && (
+        <Modal onClose={() => setIsModalOpen(false)}>
+          <p>{modalMessage}</p>
+        </Modal>
+      )}
     </>
   );
 };

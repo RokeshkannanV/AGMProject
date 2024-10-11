@@ -1,7 +1,13 @@
+/* Container Styling */
 .student-table {
   padding: 20px;
-  margin: 0 auto;
+  margin: 0 auto; /* Horizontally center the container */
   max-width: 800px; /* Set a maximum width for the container */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+  min-height: 100vh; /* Ensure full height for vertical centering */
 }
 
 h1 {
@@ -9,6 +15,7 @@ h1 {
   margin-bottom: 20px;
 }
 
+/* Form Styling */
 .form-control {
   margin-bottom: 15px;
 }
@@ -27,31 +34,34 @@ input[type="email"] {
   border-radius: 4px;
 }
 
-.btn {
-  background-color: #007bff; /* Bootstrap primary color */
-  color: white;
+/* Button Styling */
+.btn,
+.docx {
+  background-color: #007bff; 
+  color: rgb(255, 255, 255);
   border: none;
   padding: 10px 15px;
   border-radius: 5px;
   cursor: pointer;
-  margin: 0 10px; /* Add margin between buttons */
-  transition: background-color 0.3s ease; /* Smooth transition for hover */
+  margin: 0 10px;   
+  transition: background-color 0.3s ease;
 }
 
-.btn:hover {
-  background-color: #0056b3; /* Darker shade for hover */
-}
+.btn:hover,
+.docx:hover {
+  background-color: #0056b3; 
+}  
 
+/* Table Styling */
 table {
   width: 100%; /* Full width */
   border-collapse: collapse; /* Remove spacing between cells */
-  margin: 10px 0; /* Center the table */
+  margin: 10px 0; /* Margin above and below table */
   border: 2px solid hsl(58, 100%, 51%) !important; /* Set a solid border for the table */
 }
 
-th,
-td {
-  border: 1px solid hsl(58, 100%, 51%); /* Set the border color for table cells */
+th, td {
+  border: 1px solid hsl(58, 100%, 51%); /* Set border color for table cells */
   padding: 10px;
   text-align: left;
 }
@@ -70,6 +80,12 @@ tr:hover {
 
 /* Responsive Styles */
 @media (max-width: 600px) {
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto; /* Allow horizontal scrolling */
+  }
+
   th, td {
     font-size: 14px; /* Smaller text on small screens */
     display: block; /* Stack table cells */
@@ -83,43 +99,40 @@ tr:hover {
   }
 
   tr {
-    margin-bottom: 15px; /* Add some space between rows */
+    margin-bottom: 15px; /* Add space between rows */
     border: 1px solid hsl(58, 100%, 51%); /* Add border for each row */
   }
 
+  /* Style button container on mobile */
   .button-container {
     display: flex;
     justify-content: center; /* Center the buttons horizontally */
-    margin: 20px 0; /* Add some margin above and below the buttons */
+    margin: 20px 0; /* Margin above and below buttons */
   }
-  
-  .docx {
-    background-color: #007bff; /* Bootstrap primary color */
-    color: white;
-    border: none;
+
+  .docx, .btn {
+    width: 100%; /* Buttons take full width on small screens */
     padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin: 0 10px; /* Space between buttons */
-    transition: background-color 0.3s ease; /* Smooth transition for hover */
-    width: auto; /* Let buttons size according to text */
+    margin-bottom: 10px; /* Space between buttons */
   }
   
-  .btn:hover {
+  .docx:hover {
     background-color: #0056b3; /* Darker shade for hover */
   }
-  
 }
+
+/* Header Styling */
 .header {
   display: flex;
   align-items: center;
-  margin-bottom: 20px; 
+  margin-bottom: 20px;
 }
 
+/* Back Button Styling */
 .back-button {
-  position: absolute; /* or fixed if you want it to stay on screen while scrolling */
-  top: 50px; /* Adjust as needed */
-  left: 20px; /* Adjust as needed */
+  position: absolute;
+  top: 50px;
+  left: 20px;
   padding: 10px;
   background-color: #007bff;
   color: white;
@@ -128,14 +141,21 @@ tr:hover {
   cursor: pointer;
   font-size: 16px;
   display: flex;
-  align-items: center; /* Center the icon vertically */
+  align-items: center;
 }
 
 .back-button:hover {
   background-color: #0056b3;
 }
 
+/* Radio Group Styling */
+.radio-group {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: space-between;
+}
 
-.back-button:hover {
-  background-color: #0056b3;
+.radio-group label {
+  margin-right: 15px;
 }

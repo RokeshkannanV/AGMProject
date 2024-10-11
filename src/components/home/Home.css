@@ -1,0 +1,33 @@
+.popper {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: yellow;
+  }
+  
+  .popper-left {
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .popper-right {
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  
+  .blast {
+    animation: popper-blast 1s forwards;
+  }
+  
+  @keyframes popper-blast {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(10);
+      opacity: 0;
+    }
+  }
+  

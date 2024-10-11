@@ -32,25 +32,18 @@
     border-radius: 5px;
     border: 2px solid #ccc;
 }
-.btn{
-    /* padding: 0.5rem 1rem;
-    border-radius: 5px;
-    background-color: #fffb10;
-    color: black;
-    border: none;
-    cursor: pointer;
-    margin-right: 1rem; */
-    background-color: #007bff; /* Bootstrap primary color */
+.btn1{
     color: white;
+    background-color: #406dde;
     border: none;
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
-    margin: 0 10px; /* Space between buttons */
-    transition: background-color 0.3s ease; /* Smooth transition for hover */
+    margin: 0 10px; 
+    transition: background-color 0.3s ease;
     width: auto;
 }
-.btn:hover{
+.btn1:hover{
     background-color: rgb(187, 1, 243);
 }
 .table-contaier{
@@ -100,4 +93,13 @@
   .back-button:hover {
     background-color: #0056b3;
   }
-  
+  .radio-group {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.radio-group label {
+  margin-right: 15px;
+}

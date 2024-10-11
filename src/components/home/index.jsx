@@ -1,8 +1,9 @@
 /* eslint-disable */
-import React from "react";
+import React, { useEffect, useCallback } from "react";
 import { useAuth } from "../../contexts/authContext";
 import { Link } from "react-router-dom";
 import logo from "../../pagess/Agaram_logo-removebg-preview.png";
+import "./Home.css"; // Import the CSS file for popper animations
 
 const Home = () => {
   const { currentUser } = useAuth();
@@ -15,6 +16,7 @@ const Home = () => {
 
   return (
     <>
+
       <div className="text-2xl font-bold pt-14 py-5 text-center">
         Hiiii{" "}
         {currentUser.displayName ? currentUser.displayName : getUsernameFromEmail(currentUser.email)},

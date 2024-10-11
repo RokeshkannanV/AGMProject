@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React, { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, getDocs, updateDoc, doc } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, query, orderBy } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom"; 
 import { FaChevronLeft } from 'react-icons/fa'; 
@@ -9,6 +9,7 @@ import Modal from '../modelc/Model';
 import "../pagess/StudentTable.css"; 
 
 const firebaseConfig = {
+  
   apiKey: "AIzaSyDpKf7LcVyz8uPbhHzojfVq7WmbSE_Xkts",
   authDomain: "firstagm-b0094.firebaseapp.com",
   projectId: "firstagm-b0094",
@@ -27,7 +28,6 @@ const StudentTable = () => {
   const [students, setStudents] = useState([]);
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
-  const [email, setEmail] = useState("");
   const [number, setNumber] = useState("");
   const [batch, setBatch] = useState("");
   const [department, setDepartment] = useState("");
@@ -37,9 +37,12 @@ const StudentTable = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
 
+  const user = auth.currentUser;
+
   const fetchStudents = async () => {
     const studentCollection = collection(db, "aluminis");
-    const studentSnapshots = await getDocs(studentCollection);
+    const studentQuery = query(studentCollection, orderBy("batch", "asc"));
+    const studentSnapshots = await getDocs(studentQuery);
     const studentList = studentSnapshots.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -55,7 +58,6 @@ const StudentTable = () => {
     if (editingStudent) {
       setName(editingStudent.name);
       setAge(editingStudent.age);
-      setEmail(editingStudent.email);
       setNumber(editingStudent.number);
       setBatch(editingStudent.batch);
       setDepartment(editingStudent.department);
@@ -68,14 +70,13 @@ const StudentTable = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const user = auth.currentUser;
 
     if (editingStudent) {
       if (editingStudent.email.trim().toLowerCase() === user.email.trim().toLowerCase()) {
         await updateDoc(doc(db, "aluminis", editingStudent.id), {
           name,
           age,
-          email,
+          email: user.email,
           number,
           batch,
           department,
@@ -84,7 +85,7 @@ const StudentTable = () => {
         });
         setEditingStudent(null);
         setModalMessage("Student data updated successfully!");
-        setModalOpen(true); // Open modal for success message
+        setModalOpen(true);
       } else {
         setModalMessage("You can only edit your own data.");
         setModalOpen(true);
@@ -93,7 +94,7 @@ const StudentTable = () => {
       await addDoc(collection(db, "aluminis"), {
         name,
         age,
-        email,
+        email: user.email,
         number,
         batch,
         department,
@@ -101,7 +102,7 @@ const StudentTable = () => {
         parentNumber,
       });
       setModalMessage("Student added successfully!");
-      setModalOpen(true); // Open modal for success message
+      setModalOpen(true);
     }
 
     resetForm();
@@ -111,7 +112,6 @@ const StudentTable = () => {
   const resetForm = () => {
     setName("");
     setAge("");
-    setEmail("");
     setNumber("");
     setBatch("");
     setDepartment("");
@@ -120,8 +120,7 @@ const StudentTable = () => {
   };
 
   const handleEditClick = (student) => {
-    const user = auth.currentUser;
-    if (user && student.email.trim().toLowerCase() === user.email.trim().toLowerCase()) {
+    if (student.email.trim().toLowerCase() === user.email.trim().toLowerCase()) {
       setEditingStudent(student);
     } else {
       setModalMessage("You can only edit your own data.");
@@ -138,7 +137,6 @@ const StudentTable = () => {
       </div>
       <h1 className="text-center">Student List</h1>
       <form onSubmit={handleSubmit}>
-        {/* Form Fields */}
         <div className="form-control">
           <label htmlFor="name">Name :</label>
           <input
@@ -198,10 +196,9 @@ const StudentTable = () => {
           <label htmlFor="email">Email :</label>
           <input
             type="email"
-            placeholder="Email"
             id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={user.email}
+            disabled
             required
           />
         </div>
@@ -217,9 +214,21 @@ const StudentTable = () => {
           />
         </div>
         <div className="button-container">
-          <button type="submit" className="docx">
-            {editingStudent ? "Update Student" : "Add Student"}
-          </button>
+        <button
+  type="submit"
+  className="docx"
+  style={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "0 auto",    // Center the button horizontally
+    padding: "10px 20px", // Adjust padding for size
+    marginTop: "20px",    // Optional: add some margin on top
+  }}
+>
+  {editingStudent ? "Update Student" : "Add Student"}
+</button>
+
         </div>
       </form>
 
@@ -242,13 +251,13 @@ const StudentTable = () => {
           <tbody>
             {students.map((student) => (
               <tr key={student.id}>
-                <td>{student.name}</td>
-                <td>{student.email}</td>
-                <td>{student.number}</td>
-                <td>{student.batch}</td>
-                <td>{student.department}</td>
-                <td>{student.college}</td>
-                <td>{student.parentNumber}</td>
+                <td data-label="Name">{student.name}</td>
+                <td data-label="Email">{student.email}</td>
+                <td data-label="Mobile Number">{student.number}</td>
+                <td data-label="Batch">{student.batch}</td>
+                <td data-label="Department">{student.department}</td>
+                <td data-label="College">{student.college}</td>
+                <td data-label="Parent Number">{student.parentNumber}</td>
                 <td>
                   <button onClick={() => handleEditClick(student)}>
                     Edit
@@ -271,3 +280,9 @@ const StudentTable = () => {
 };
 
 export default StudentTable;
+
+
+
+  
+
+
