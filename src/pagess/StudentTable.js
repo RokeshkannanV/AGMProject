@@ -267,11 +267,11 @@ const StudentTable = () => {
       ) : (
         <p>No students found.</p>
       )}
-      <div className="button-container">
+      {/* <div className="button-container">
         <Link to="/documents">
           <button className="docx">Document Page</button>
         </Link>
-      </div>
+      </div> */}
     </div>
   );
 };

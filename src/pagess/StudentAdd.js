@@ -307,7 +307,7 @@ const StudentAdd = () => {
     </tbody>
   </table>
 </div>
- <button style={{
+ {/* <button style={{
     backgroundColor: '#007bff', // Blue background color
     color: 'white', // White text color
     padding: '10px 20px', // Padding for better size
@@ -324,7 +324,7 @@ const StudentAdd = () => {
   <Link to="/attendance">
   Go to Student List
   </Link>
- </button>
+ </button> */}
         </div>
       </div>
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} message={modalMessage} />
