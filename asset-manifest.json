@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/AGMProject/static/css/main.0b471fe4.css",
+    "main.css": "/AGMProject/static/css/main.d464e3f9.css",
     "main.js": "/AGMProject/static/js/main.6a983377.js",
     "static/media/Agaram_logo-removebg-preview.png": "/AGMProject/static/media/Agaram_logo-removebg-preview.63a25a616c88ab84247f.png",
     "index.html": "/AGMProject/index.html",
-    "main.0b471fe4.css.map": "/AGMProject/static/css/main.0b471fe4.css.map",
+    "main.d464e3f9.css.map": "/AGMProject/static/css/main.d464e3f9.css.map",
     "main.6a983377.js.map": "/AGMProject/static/js/main.6a983377.js.map"
   },
   "entrypoints": [
-    "static/css/main.0b471fe4.css",
+    "static/css/main.d464e3f9.css",
     "static/js/main.6a983377.js"
   ]
 }
