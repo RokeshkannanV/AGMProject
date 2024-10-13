@@ -9,7 +9,6 @@ import Modal from '../modelc/Model';
 import "../pagess/StudentTable.css"; 
 
 const firebaseConfig = {
-  
   apiKey: "AIzaSyDpKf7LcVyz8uPbhHzojfVq7WmbSE_Xkts",
   authDomain: "firstagm-b0094.firebaseapp.com",
   projectId: "firstagm-b0094",
@@ -131,7 +130,7 @@ const StudentTable = () => {
   return (
     <div className="student-table">
       <div className="header">
-        <button className="back-button" onClick={() => navigate("/studentadd")}>
+        <button className="back-button" onClick={() => navigate("/home")}>
           <FaChevronLeft /> Back
         </button>
       </div>
@@ -216,14 +215,10 @@ const StudentTable = () => {
         <div className="button-container">
         <button
   type="submit"
-  className="docx"
+  className="btn"
   style={{
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    margin: "0 auto",    // Center the button horizontally
-    padding: "10px 20px", // Adjust padding for size
-    marginTop: "20px",    // Optional: add some margin on top
+    display: 'block',
+    margin: '0 auto', // Centers the button horizontally
   }}
 >
   {editingStudent ? "Update Student" : "Add Student"}
@@ -235,38 +230,40 @@ const StudentTable = () => {
       <Modal isOpen={isModalOpen} onClose={() => setModalOpen(false)} message={modalMessage} />
 
       {students.length > 0 ? (
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Mobile Number</th>
-              <th>Batch</th>
-              <th>Department</th>
-              <th>College</th>
-              <th>Parent Number</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {students.map((student) => (
-              <tr key={student.id}>
-                <td data-label="Name">{student.name}</td>
-                <td data-label="Email">{student.email}</td>
-                <td data-label="Mobile Number">{student.number}</td>
-                <td data-label="Batch">{student.batch}</td>
-                <td data-label="Department">{student.department}</td>
-                <td data-label="College">{student.college}</td>
-                <td data-label="Parent Number">{student.parentNumber}</td>
-                <td>
-                  <button onClick={() => handleEditClick(student)}>
-                    Edit
-                  </button>
-                </td>
+        <div className="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Mobile Number</th>
+                <th>Batch</th>
+                <th>Department</th>
+                <th>College</th>
+                <th>Parent Number</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {students.map((student) => (
+                <tr key={student.id}>
+                  <td data-label="Name">{student.name}</td>
+                  <td data-label="Email">{student.email}</td>
+                  <td data-label="Mobile Number">{student.number}</td>
+                  <td data-label="Batch">{student.batch}</td>
+                  <td data-label="Department">{student.department}</td>
+                  <td data-label="College">{student.college}</td>
+                  <td data-label="Parent Number">{student.parentNumber}</td>
+                  <td>
+                    <button onClick={() => handleEditClick(student)}>
+                      Edit
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
         <p>No students found.</p>
       )}
@@ -280,9 +277,3 @@ const StudentTable = () => {
 };
 
 export default StudentTable;
-
-
-
-  
-
-

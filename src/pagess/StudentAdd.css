@@ -1,84 +1,123 @@
-.studentname{
+.studentname {
     text-align: center;
     z-index: 1000;
-    position: relative; 
-}
-.cstyle{
+    position: relative;
+  }
+  
+  .cstyle {
     max-width: 800px;
     margin: 0 auto;
-    
     justify-content: center;
     align-items: center;
-
-}
-.yet-another-heading {
+  }
+  
+  .yet-another-heading {
     font-size: 2rem;
     margin-bottom: 2rem;
     text-decoration: underline;
-}
-
-.form-control{
+  }
+  
+  .form-control {
     display: flex;
     margin-bottom: 1rem;
-}
-.form-control label{
+  }
+  
+  .form-control label {
     flex: 1;
     font-weight: bold;
     margin-right: 1rem;
-}
-.form-control input{
+  }
+  
+  .form-control input {
     flex: 2;
     padding: 0.5rem;
     border-radius: 5px;
     border: 2px solid #ccc;
-}
-.btn1{
+  }
+  
+  .btn1 {
     color: white;
     background-color: #406dde;
     border: none;
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
-    margin: 0 10px; 
+    margin: 0 10px;
     transition: background-color 0.3s ease;
     width: auto;
-}
-.btn1:hover{
+  }
+  
+  .btn1:hover {
     background-color: rgb(187, 1, 243);
-}
-.table-contaier{
+  }
+  
+  .table-container {
     width: 100%;
-}
-.table-contaier table{
+    overflow-x: auto; /* Enable horizontal scrolling */
+    margin-top: 20px;
+  }
+  
+  .table-container table {
     width: 100%;
     border-collapse: collapse;
-    justify-content: center;
-    align-items: center;
-}
-.table-contaier th,td{
-    border: 3px solid #eef107;
+    table-layout: auto; /* Allow table to adjust based on content */
+  }
+  
+  .table-container th, td {
+    border: 2px solid #eef107;
     padding: 8px;
-    text-align: left;
-}
-.table-contaier th{
-    background-color: #2808da;
-    color: #eef107;
-}
-.table-wrapper{
+    text-align: center;
+    white-space: nowrap; /* Prevent text from wrapping */
+  }
+  
+  .table-container th {
+    background-color: #ffffff;
+    color: #2c2c27;
+    position: -webkit-sticky; /* Safari support */
+    position: sticky; /* Standard sticky header */
+    top: 0;
+    z-index: 2;
+  }
+  
+  /* Adding min-width to specific columns */
+  .table-container td:first-child {
+    min-width: 150px; /* Ensure the Name column is wide enough */
+  }
+  
+  .table-container td:nth-child(4) {
+    min-width: 200px; /* Ensure Email column is wide enough */
+  }
+  
+  .table-container td:nth-child(5) {
+    min-width: 180px; /* Ensure Company column is wide enough */
+  }
+  
+  .table-wrapper {
     display: flex;
     justify-content: center;
-}
-.table-wrapper table{
+    overflow-x: auto; /* Enable scrolling for large content */
+  }
+  
+  .table-wrapper table {
     width: 100%;
     margin-top: 2rem;
-}
-.table-wrapper table tbody tr td{
+    border-collapse: collapse;
+  }
+  
+  .table-wrapper table th, .table-wrapper table td {
+    padding: 12px;
+    border: 1px solid #ddd;
     text-align: center;
-}
-.back-button {
-    position: absolute; /* or fixed if you want it to stay on screen while scrolling */
-    top: 50px; /* Adjust as needed */
-    left: 20px; /* Adjust as needed */
+  }
+  
+  .table-wrapper table tbody tr:hover {
+    background-color: #f1f1f1; /* Row hover effect */
+  }
+  
+  .back-button {
+    position: absolute;
+    top: 50px;
+    left: 20px;
     padding: 10px;
     background-color: #007bff;
     color: white;
@@ -87,19 +126,27 @@
     cursor: pointer;
     font-size: 16px;
     display: flex;
-    align-items: center; /* Center the icon vertically */
+    align-items: center;
   }
   
   .back-button:hover {
     background-color: #0056b3;
   }
+  
   .radio-group {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  justify-content: space-between;
-}
-
-.radio-group label {
-  margin-right: 15px;
-}
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-start;
+  }
+  
+  .radio-group label {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+  }
+  
+  .radio-group input {
+    margin-right: 5px;
+  }
+  

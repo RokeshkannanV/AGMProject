@@ -1,0 +1,88 @@
+/* Dashboard Container Styling */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height for vertical centering */
+    text-align: center;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Style for Dashboard Title */
+  .dashboard-container h1 {
+    font-size: 2rem; /* Enlarge the font size */
+    font-weight: bold; /* Make the text bold */
+    color: #333; /* Darker color for the title */
+    margin-bottom: 30px; /* Add some space between the title and the icons */
+    text-transform: uppercase; /* Make the text uppercase */
+    letter-spacing: 2px; /* Add some spacing between letters */
+  }
+  
+  /* Dashboard Icons Grid - 2x2 Layout */
+  .dashboard-icons {
+    display: grid;
+    grid-template-columns: repeat(2, 125px); /* Create 2 columns with 200px width */
+    grid-template-rows: repeat(2, 125px); /* Create 2 rows with 200px height */
+    gap: 10px; /* Space between the icons */
+    justify-items: center; /* Center the content within each cell */
+    align-items: center; /* Vertically center items */
+  }
+  
+  /* Individual Dashboard Items */
+  .dashboard-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 130px;
+    height: 130px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 18px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+  }
+  
+  /* Hover Effect */
+  /* .dashboard-item:hover {
+    transform: scale(1.1);
+  }
+   */
+  /* Colorful Backgrounds for Each Icon */
+  .add-student {
+    background-color: #0078D4; /* Blue */
+  }
+  
+  .view-students {
+    background-color: #E81123; /* Red */
+  }
+  
+  .documents {
+    background-color: #F4B400; /* Yellow */
+  }
+  
+  .reports {
+    background-color: #00A400; /* Green */
+  }
+  
+  /* Icon and Text Styling */
+  .dashboard-item p {
+    margin-top: 10px;
+    font-size: 18px;
+    color: #fff;
+  }
+  
+  /* Mobile Responsiveness */
+  @media (max-width: 600px) {
+    .dashboard-icons {
+      grid-template-columns: 1fr; /* Single column on small screens */
+      grid-template-rows: repeat(4, 150px); /* 4 rows */
+    }
+  
+    .dashboard-item {
+      width: 50px;
+      height: 50px;
+    }
+  }
+  

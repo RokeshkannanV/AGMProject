@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import "./StudentAdd.css";
 import "./StudentTable.css";
 import { FaChevronLeft } from 'react-icons/fa';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import studentImage from "../pagess/Agaram_logo-removebg-preview.png";
 import { initializeApp } from "firebase/app";
 import {
@@ -34,9 +34,7 @@ const auth = getAuth(app);
 
 const StudentAdd = () => {
   const navigate = useNavigate();
-  const user = auth.currentUser;
-  const userEmail = user ? user.email : null;
-
+  const [userEmail, setUserEmail] = useState(null);
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [email, setEmail] = useState("");
@@ -50,7 +48,13 @@ const StudentAdd = () => {
   const [modalMessage, setModalMessage] = useState("");
 
   useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUserEmail(user.email);
+      }
+    });
     fetchStudents();
+    return () => unsubscribe();
   }, []);
 
   const fetchStudents = async () => {
@@ -62,7 +66,7 @@ const StudentAdd = () => {
           id: doc.id,
           ...doc.data(),
         }))
-        .sort((a, b) => a.batch.localeCompare(b.batch)); // Sort by batch (older batches first)
+        .sort((a, b) => a.batch.localeCompare(b.batch));
       setStudents(studentList);
     } catch (error) {
       console.error("Error fetching students:", error);
@@ -71,15 +75,13 @@ const StudentAdd = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       if (editingStudent) {
-        // Only update if the email matches the logged-in user
         if (editingStudent.email === userEmail) {
           await updateDoc(doc(db, "students", editingStudent.id), {
             name,
             age: age || editingStudent.age,
-            email: userEmail, // Update to logged-in user's email
+            email: userEmail,
             number,
             companyName: companyName || editingStudent.companyName,
             batch,
@@ -96,13 +98,11 @@ const StudentAdd = () => {
           number,
           batch,
           type,
-          age, // Use the value from the form
-          email: userEmail, // Set to logged-in user's email
-          companyName, // Use the value from the form
+          age,
+          email: userEmail,
+          companyName,
         });
       }
-
-      // After adding or editing, refetch the students to ensure sorting
       await fetchStudents();
       resetForm();
     } catch (error) {
@@ -121,11 +121,10 @@ const StudentAdd = () => {
   };
 
   const handleEdit = (student) => {
-    // Allow editing only if the email matches the logged-in user
     if (student.email === userEmail) {
       setName(student.name);
       setAge(student.age);
-      setEmail(student.email); // Set current email
+      setEmail(student.email);
       setNumber(student.number);
       setCompanyName(student.companyName);
       setBatch(student.batch);
@@ -134,15 +133,6 @@ const StudentAdd = () => {
     } else {
       setModalMessage("You can only edit your own data.");
       setIsModalOpen(true);
-    }
-  };
-
-  const handleDelete = async (id) => {
-    try {
-      await deleteDoc(doc(db, "students", id));
-      setStudents(students.filter((student) => student.id !== id));
-    } catch (error) {
-      console.error("Error deleting student", error);
     }
   };
 
@@ -209,7 +199,7 @@ const StudentAdd = () => {
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                disabled // Email is set automatically and should not be edited
+                disabled
               />
             </div>
             <div className="form-control">
@@ -224,15 +214,8 @@ const StudentAdd = () => {
             </div>
             <div className="form-control">
               <label>Type :</label>
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap', // Ensures wrapping on small screens
-                  gap: '5px', // Adds space between the radio buttons
-                  justifyContent: 'flex-start', // Aligns items to the start
-                }}
-              >
-                <label style={{ minWidth: '120px' }}>
+              <div className="radio-group">
+                <label>
                   <input
                     type="radio"
                     value="Hardware"
@@ -241,7 +224,7 @@ const StudentAdd = () => {
                   />
                   Hardware
                 </label>
-                <label style={{ minWidth: '120px' }}>
+                <label>
                   <input
                     type="radio"
                     value="Software"
@@ -250,16 +233,16 @@ const StudentAdd = () => {
                   />
                   Software
                 </label>
-                <label style={{ minWidth: '120px' }}>
+                <label>
                   <input
                     type="radio"
-                    value="GovtSector"
-                    checked={type === "GovtSector"}
-                    onChange={() => setType("GovtSector")}
+                    value="Govt Sector"
+                    checked={type === "Govt Sector"}
+                    onChange={() => setType("Govt Sector")}
                   />
                   Govt Sector
                 </label>
-                <label style={{ minWidth: '120px' }}>
+                <label>
                   <input
                     type="radio"
                     value="Entrepreneur"
@@ -270,72 +253,81 @@ const StudentAdd = () => {
                 </label>
               </div>
             </div>
-
             <button
-              type="submit"
-              className="btn1"
-              style={{
-                backgroundColor: "#007bff", // Blue background color
-                color: "white", // White text color
-                padding: "10px 20px", // Padding inside the button for spacing
-                border: "none", // Remove borders
-                borderRadius: "50px", // Rounded corners for the box
-                fontSize: "16px", // Font size
-                cursor: "pointer", // Pointer cursor on hover
-                transition: "background-color 0.3s ease", // Smooth hover effect
-              }}
-            >
-              {editingStudent ? "Update Alumni" : "Add Alumni"}
-            </button>
+  type="submit"
+  className="btn-submit"
+  style={{
+    backgroundColor: '#007bff', // Blue background color
+    color: 'white', // White text color
+    padding: '10px 20px', // Padding for better size
+    border: 'none', // No border
+    borderRadius: '5px', // Rounded corners
+    fontSize: '16px', // Font size
+    cursor: 'pointer', // Pointer cursor on hover
+    transition: 'background-color 0.3s ease', // Smooth transition on hover
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Subtle shadow for depth
+  }}
+  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#0056b3')} // Darker blue on hover
+  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#007bff')} // Original blue on mouse leave
+>
+  {editingStudent ? "Update Alumni" : "Add Alumni"}
+</button>
+
           </form>
 
-          <table className="styled-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Mobile Number</th>
-                <th>Batch</th>
-                <th>Age</th>
-                <th>Email</th>
-                <th>Company Name</th>
-                <th>Type</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {students.map((student) => (
-                <tr key={student.id}>
-                  <td>{student.name}</td>
-                  <td>{student.number}</td>
-                  <td>{student.batch}</td>
-                  <td>{student.age}</td>
-                  <td>{student.email}</td>
-                  <td>{student.companyName}</td>
-                  <td>{student.type}</td>
-                  <td>
-                    <button className="btn1" onClick={() => handleEdit(student)}>Edit</button>
-                    {/* <button className="btn1" onClick={() => handleDelete(student.id)}>Delete</button> */}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-<div className="button-group">
-  <button className="btn" onClick={() => navigate("/attendance")}>
-    Go to Student List
-  </button>
+          <div className="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Batch</th>
+        <th>Mobile Number</th>
+        <th>Email</th>
+        <th>Company</th>
+        <th>Type</th> {/* Added 'Type' column */}
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {students.map((student) => (
+        <tr key={student.id}>
+          <td>{student.name}</td> {/* Mapped Name properly */}
+          <td>{student.batch}</td> {/* Mapped Batch properly */}
+          <td>{student.number}</td> {/* Mapped Mobile Number properly */}
+          <td>{student.email}</td> {/* Mapped Email properly */}
+          <td>{student.companyName}</td> {/* Mapped Company Name properly */}
+          <td>{student.type}</td> {/* Mapped Type properly */}
+          <td>
+            <button className="btn edit-btn" onClick={() => handleEdit(student)}>
+              Edit
+            </button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
 </div>
-
+ <button style={{
+    backgroundColor: '#007bff', // Blue background color
+    color: 'white', // White text color
+    padding: '10px 20px', // Padding for better size
+    border: 'none', // No border
+    borderRadius: '5px', // Rounded corners
+    fontSize: '16px', // Font size
+    cursor: 'pointer', // Pointer cursor on hover
+    transition: 'background-color 0.3s ease', // Smooth transition on hover
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Subtle shadow for depth
+  }}
+  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#0056b3')} // Darker blue on hover
+  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#007bff')} // Original blue on mouse leave
+>
+  <Link to="/attendance">
+  Go to Student List
+  </Link>
+ </button>
         </div>
       </div>
-
-      {/* Modal for messages */}
-      {isModalOpen && (
-        <Modal onClose={() => setIsModalOpen(false)}>
-          <p>{modalMessage}</p>
-        </Modal>
-      )}
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} message={modalMessage} />
     </>
   );
 };

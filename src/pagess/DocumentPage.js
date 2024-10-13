@@ -101,7 +101,7 @@ function DocumentPage() {
 
   return (
     <>
-      <button className="back-button" onClick={() => navigate("/attendance")}>
+      <button className="back-button" onClick={() => navigate("/home")}>
         <FaChevronLeft /> Back
       </button>
       <div className="flex justify-center">

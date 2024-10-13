@@ -5,8 +5,12 @@ import Login from "./components/auth/login";
 import Register from "./components/auth/register";
 import Header from "./components/header";
 import Home from "./components/home";
+import Dashboard from "./pagess/Dashboard"; // Import the new Dashboard component
+// import VoiceRecognition from "./components/speech/VoiceRecognition.tsx";
+// import TextToSpeech from "./components/speech/TextToSpeech";
 import { AuthProvider, useAuth } from "./contexts/authContext";
 import StudentAdd from "./pagess/StudentAdd";
+import StudentTable from "./pagess/StudentTable"; // Assuming this exists
 import AttendancePage from "./pagess/AttendancePage";
 import DocumentPage from "./pagess/DocumentPage";
 
@@ -17,19 +21,15 @@ const AppContent = () => {
     <>
       <Header />
       <Routes>
-        {/* Redirect to Home if logged in, otherwise show Register */}
         <Route path="/register" element={!userLoggedIn ? <Register /> : <Navigate to="/home" />} />
-        {/* Redirect to Home if logged in, otherwise show Login */}
         <Route path="/login" element={!userLoggedIn ? <Login /> : <Navigate to="/home" />} />
-        {/* Show Home if logged in, otherwise redirect to Login */}
         <Route path="/home" element={userLoggedIn ? <Home /> : <Navigate to="/login" />} />
-        {/* Show StudentAdd if logged in, otherwise redirect to Login */}
+        <Route path="/dashboard" element={userLoggedIn ? <Dashboard /> : <Navigate to="/login" />} />
         <Route path="/studentadd" element={userLoggedIn ? <StudentAdd /> : <Navigate to="/login" />} />
-        {/* Show AttendancePage if logged in, otherwise redirect to Login */}
+        <Route path="/studenttable" element={userLoggedIn ? <StudentTable /> : <Navigate to="/login" />} />
         <Route path="/attendance" element={userLoggedIn ? <AttendancePage /> : <Navigate to="/login" />} />
-        {/* Show DocumentPage if logged in, otherwise redirect to Login */}
         <Route path="/documents" element={userLoggedIn ? <DocumentPage /> : <Navigate to="/login" />} />
-        {/* Redirect to /home or /login based on user authentication */}
+        {/* <Route path="/reports" element={userLoggedIn ? <VoiceRecognition /> : <Navigate to="/login" />} />  */}
         <Route path="*" element={<Navigate to={userLoggedIn ? "/home" : "/login"} />} />
       </Routes>
     </>

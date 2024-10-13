@@ -45,7 +45,7 @@ const Home = () => {
           எல்லோருக்கும் பகிர்ந்து தருவோம் என்று உறுதி ஏற்கிறோம்.
         </h3>
         <div className="flex justify-center">
-          <Link to="/studentadd">
+          <Link to="/dashboard">
             <button
               className="bg-yellow-500 text-white 
                     rounded-lg px-4 py-2 mt-8"
