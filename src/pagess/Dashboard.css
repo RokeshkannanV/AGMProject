@@ -45,19 +45,19 @@
 
 /* Colorful Backgrounds for Each Icon */
 .add-student {
-  background-color: #0078D4; /* Blue */
+  background-color: #E81123; /* Blue */ /*#E81123*/
 }
 
 .view-students {
-  background-color: #E81123; /* Red */
+  background-color: #00A400; /* Red */ /*#00A400*/
 }
 
 .documents {
-  background-color: #F4B400; /* Yellow */
+  background-color: #0078D4; /* Yellow */ /*#0078D4*/
 }
 
 .reports {
-  background-color: #00A400; /* Green */
+  background-color: #F4B400; /* Green */ /*#F4B400*/
 }
 
 /* Icon and Text Styling */

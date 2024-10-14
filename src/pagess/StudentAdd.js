@@ -281,6 +281,7 @@ const StudentAdd = () => {
       <tr>
         <th>Name</th>
         <th>Batch</th>
+        <th>Age</th>
         <th>Mobile Number</th>
         <th>Email</th>
         <th>Company</th>
@@ -293,12 +294,28 @@ const StudentAdd = () => {
         <tr key={student.id}>
           <td>{student.name}</td> {/* Mapped Name properly */}
           <td>{student.batch}</td> {/* Mapped Batch properly */}
+          <td>{student.age}</td>
           <td>{student.number}</td> {/* Mapped Mobile Number properly */}
           <td>{student.email}</td> {/* Mapped Email properly */}
           <td>{student.companyName}</td> {/* Mapped Company Name properly */}
           <td>{student.type}</td> {/* Mapped Type properly */}
           <td>
-            <button className="btn edit-btn" onClick={() => handleEdit(student)}>
+            <button onClick={() => handleEdit(student)}
+              style={{
+                backgroundColor: '#007bff', // Blue background color
+                color: 'white', // White text color
+                padding: '10px 20px', // Padding for better size
+                border: 'none', // No border
+                borderRadius: '5px', // Rounded corners
+                fontSize: '16px', // Font size
+                cursor: 'pointer', // Pointer cursor on hover
+                transition: 'background-color 0.3s ease', // Smooth transition on hover
+                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Subtle shadow for depth
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#0056b3')} // Darker blue on hover
+              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#007bff')} // Original blue on mouse leave
+            >
+              {/* {editingStudent ? "Update Alumni" : "Add Alumni"} */}
               Edit
             </button>
           </td>

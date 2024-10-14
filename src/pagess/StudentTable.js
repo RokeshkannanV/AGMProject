@@ -215,14 +215,27 @@ const StudentTable = () => {
         <div className="button-container">
         <button
   type="submit"
-  className="btn"
+  // className="btn"
   style={{
     display: 'block',
     margin: '0 auto', // Centers the button horizontally
-  }}
->
-  {editingStudent ? "Update Student" : "Add Student"}
-</button>
+      backgroundColor: '#007bff', // Blue background color
+      color: 'white', // White text color
+      padding: '10px 20px', // Padding for better size
+      border: 'none', // No border
+      borderRadius: '5px', // Rounded corners
+      fontSize: '16px', // Font size
+      cursor: 'pointer', // Pointer cursor on hover
+      transition: 'background-color 0.3s ease', // Smooth transition on hover
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Subtle shadow for depth
+    }}
+    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#0056b3')} // Darker blue on hover
+    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#007bff')} // Original blue on mouse leave
+  >
+    {editingStudent ? "Update Student" : "Add Student"}
+  </button>
+  {/* {editingStudent ? "Update Student" : "Add Student"} */}
+
 
         </div>
       </form>
@@ -255,7 +268,23 @@ const StudentTable = () => {
                   <td data-label="College">{student.college}</td>
                   <td data-label="Parent Number">{student.parentNumber}</td>
                   <td>
-                    <button onClick={() => handleEditClick(student)}>
+                    <button onClick={() => handleEditClick(student)}
+                    style={{
+                      backgroundColor: '#007bff', // Blue background color
+                      color: 'white', // White text color
+                      padding: '10px 20px', // Padding for better size
+                      border: 'none', // No border
+                      borderRadius: '5px', // Rounded corners
+                      fontSize: '16px', // Font size
+                      cursor: 'pointer', // Pointer cursor on hover
+                      transition: 'background-color 0.3s ease', // Smooth transition on hover
+                      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Subtle shadow for depth
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#0056b3')} // Darker blue on hover
+                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#007bff')} // Original blue on mouse leave
+                  >
+                    {/* {editingStudent ? "Update Alumni" : "Add Alumni"} */}
+                   
                       Edit
                     </button>
                   </td>
