@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React, { useState } from 'react'
 import { Navigate, Link } from 'react-router-dom'
-import { doSignInWithEmailAndPassword, doSignInWithGoogle } from '../../../firebase/auth'
+import { doSignInWithEmailAndPassword, doSignInWithGoogle, doPasswordReset } from '../../../firebase/auth'
 import { useAuth } from '../../../contexts/authContext'
 
 const Login = () => {
@@ -10,16 +10,21 @@ const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [isSigningIn, setIsSigningIn] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)  // New state for show/hide password
     const [errorMessage, setErrorMessage] = useState(false)
+
+    // Show/hide password toggle
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword)
+    }
 
     const onSubmit = async (e) => {
         e.preventDefault()
-        if(!isSigningIn) {
+        if (!isSigningIn) {
             setIsSigningIn(true)
             await doSignInWithEmailAndPassword(email, password)
             // doSendEmailVerification()
-        }
-        else{
+        } else {
             setErrorMessage(true);
         }
     }
@@ -34,6 +39,20 @@ const Login = () => {
         }
     }
 
+    // Forgot Password functionality
+    const onForgotPassword = async () => {
+        if (email) {
+            try {
+                await doPasswordReset(email)
+                alert('Password reset email sent')
+            } catch (error) {
+                alert('Error sending password reset email')
+            }
+        } else {
+            alert('Please enter your email address to reset the password.')
+        }
+    }
+
     return (
         <div>
             {userLoggedIn && (<Navigate to={'/home'} replace={true} />)}
@@ -45,35 +64,53 @@ const Login = () => {
                             <h3 className="text-gray-800 text-xl font-semibold sm:text-2xl">Welcome Agaram Vidhai</h3>
                         </div>
                     </div>
-                    <form
-                        onSubmit={onSubmit}
-                        className="space-y-5"
-                    >
+                    <form onSubmit={onSubmit} className="space-y-5">
                         <div>
-                            <label className="text-sm text-gray-600 font-bold">
-                                Email
-                            </label>
+                            <label className="text-sm text-gray-600 font-bold">Email</label>
                             <input
                                 type="email"
                                 autoComplete='email'
                                 required
-                                value={email} onChange={(e) => { setEmail(e.target.value) }}
+                                value={email}
+                                onChange={(e) => { setEmail(e.target.value) }}
                                 className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg transition duration-300"
                             />
                         </div>
 
+                        <div className="relative">
+  <label className="text-sm text-gray-600 font-bold">
+    Password
+  </label>
+  <input
+    type={showPassword ? 'text' : 'password'}  // Toggle between text and password
+    autoComplete='current-password'
+    required
+    value={password} 
+    onChange={(e) => { setPassword(e.target.value) }}
+    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg transition duration-300"
+  />
+  <button
+    type="button"
+    onClick={togglePasswordVisibility}
+    className="absolute inset-y-0 right-3 top-7 text-sm text-indigo-600"
+  >
+    {showPassword ? 'Hide' : (
+      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path d="M2.94 10c.343-1.072.87-2.07 1.5-2.94C6.18 4.177 8.01 3 10 3s3.82 1.177 5.56 4.06c.63.87 1.157 1.868 1.5 2.94-.343 1.072-.87 2.07-1.5 2.94C13.82 15.823 11.99 17 10 17s-3.82-1.177-5.56-4.06c-.63-.87-1.157-1.868-1.5-2.94zm7.06-1a3 3 0 100 6 3 3 0 000-6zm0 1a2 2 0 110 4 2 2 0 010-4z" />
+      </svg>
+    )}
+  </button>
+</div>
 
-                        <div>
-                            <label className="text-sm text-gray-600 font-bold">
-                                Password
-                            </label>
-                            <input
-                                type="password"
-                                autoComplete='current-password'
-                                required
-                                value={password} onChange={(e) => { setPassword(e.target.value) }}
-                                className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg transition duration-300"
-                            />
+
+                        <div className="text-right">
+                            <button
+                                type="button"
+                                onClick={onForgotPassword}
+                                className="text-sm text-indigo-600 hover:underline font-bold"
+                            >
+                                Forgot Password?
+                            </button>
                         </div>
 
                         {errorMessage && (
@@ -95,7 +132,8 @@ const Login = () => {
                     <button
                         disabled={isSigningIn}
                         onClick={(e) => { onGoogleSignIn(e) }}
-                        className={`w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg text-sm font-medium  ${isSigningIn ? 'cursor-not-allowed' : 'hover:bg-gray-100 transition duration-300 active:bg-gray-100'}`}>
+                        className={`w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg text-sm font-medium  ${isSigningIn ? 'cursor-not-allowed' : 'hover:bg-gray-100 transition duration-300 active:bg-gray-100'}`}
+                    >
                         <svg className="w-5 h-5" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clipPath="url(#clip0_17_40)">
                                 <path d="M47.532 24.5528C47.532 22.9214 47.3997 21.2811 47.1175 19.6761H24.48V28.9181H37.4434C36.9055 31.8988 35.177 34.5356 32.6461 36.2111V42.2078H40.3801C44.9217 38.0278 47.532 31.8547 47.532 24.5528Z" fill="#4285F4" />
@@ -118,6 +156,7 @@ const Login = () => {
 }
 
 export default Login
+
 // import React, { useState } from 'react';
 // import { Navigate, Link } from 'react-router-dom';
 // import { doSignInWithEmailAndPassword, doSignInWithGoogle } from '../../../firebase/auth';
