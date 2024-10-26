@@ -20,7 +20,6 @@ const AppContent = () => {
   return (
     <>
       <Header />
-      <BrowserRouter basename="/AGMProject">
       <Routes>
         <Route path="/register" element={!userLoggedIn ? <Register /> : <Navigate to="/home" />} />
         <Route path="/login" element={!userLoggedIn ? <Login /> : <Navigate to="/home" />} />
@@ -33,7 +32,6 @@ const AppContent = () => {
         {/* <Route path="/reports" element={userLoggedIn ? <VoiceRecognition /> : <Navigate to="/login" />} />  */}
         <Route path="*" element={<Navigate to={userLoggedIn ? "/home" : "/login"} />} />
       </Routes>
-      </BrowserRouter>
     </>
   );
 };
