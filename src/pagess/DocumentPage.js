@@ -101,7 +101,7 @@ function DocumentPage() {
 
   return (
     <>
-      <button className="back-button" onClick={() => navigate("/home")}>
+      <button className="back-button" onClick={() => navigate("/attendance")}>
         <FaChevronLeft /> Back
       </button>
       <div className="flex justify-center">
@@ -144,12 +144,14 @@ function DocumentPage() {
                 placeholder="Coordinator"
                 value={coordinator}
                 onChange={(e) => setCoordinator(e.target.value)}
+                style={{ color: 'black', backgroundColor: 'white' }}
               />
               <input
                 type="text"
                 placeholder="Sub-Coordinator"
                 value={subCoordinator}
                 onChange={(e) => setSubCoordinator(e.target.value)}
+                style={{ color: 'black', backgroundColor: 'white' }}
               />
               <button
                 onClick={uploadFile}
