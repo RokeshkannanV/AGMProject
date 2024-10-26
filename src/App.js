@@ -20,7 +20,7 @@ const AppContent = () => {
   return (
     <>
       <Header />
-      <Routes>
+      <Routes basename = "/AGMProject">
         <Route path="/register" element={!userLoggedIn ? <Register /> : <Navigate to="/home" />} />
         <Route path="/login" element={!userLoggedIn ? <Login /> : <Navigate to="/home" />} />
         <Route path="/home" element={userLoggedIn ? <Home /> : <Navigate to="/login" />} />

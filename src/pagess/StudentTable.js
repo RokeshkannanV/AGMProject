@@ -70,6 +70,14 @@ const StudentTable = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Check if user data already exists
+    const existingStudent = students.find(student => student.email === user.email);
+    if (existingStudent && !editingStudent) {
+      setModalMessage("Your data is already filled.");
+      setModalOpen(true);
+      return;
+    }
+
     if (editingStudent) {
       if (editingStudent.email.trim().toLowerCase() === user.email.trim().toLowerCase()) {
         await updateDoc(doc(db, "aluminis", editingStudent.id), {
@@ -213,30 +221,26 @@ const StudentTable = () => {
           />
         </div>
         <div className="button-container">
-        <button
-  type="submit"
-  // className="btn"
-  style={{
-    display: 'block',
-    margin: '0 auto', // Centers the button horizontally
-      backgroundColor: '#007bff', // Blue background color
-      color: 'white', // White text color
-      padding: '10px 20px', // Padding for better size
-      border: 'none', // No border
-      borderRadius: '5px', // Rounded corners
-      fontSize: '16px', // Font size
-      cursor: 'pointer', // Pointer cursor on hover
-      transition: 'background-color 0.3s ease', // Smooth transition on hover
-      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Subtle shadow for depth
-    }}
-    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#0056b3')} // Darker blue on hover
-    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#007bff')} // Original blue on mouse leave
-  >
-    {editingStudent ? "Update Student" : "Add Student"}
-  </button>
-  {/* {editingStudent ? "Update Student" : "Add Student"} */}
-
-
+          <button
+            type="submit"
+            style={{
+              display: 'block',
+              margin: '0 auto',
+              backgroundColor: '#007bff',
+              color: 'white',
+              padding: '10px 20px',
+              border: 'none',
+              borderRadius: '5px',
+              fontSize: '16px',
+              cursor: 'pointer',
+              transition: 'background-color 0.3s ease',
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#0056b3')}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#007bff')}
+          >
+            {editingStudent ? "Update Student" : "Add Student"}
+          </button>
         </div>
       </form>
 
@@ -268,23 +272,20 @@ const StudentTable = () => {
                   <td data-label="College">{student.college}</td>
                   <td data-label="Parent Number">{student.parentNumber}</td>
                   <td>
-                    <button onClick={() => handleEditClick(student)}
-                    style={{
-                      backgroundColor: '#007bff', // Blue background color
-                      color: 'white', // White text color
-                      padding: '10px 20px', // Padding for better size
-                      border: 'none', // No border
-                      borderRadius: '5px', // Rounded corners
-                      fontSize: '16px', // Font size
-                      cursor: 'pointer', // Pointer cursor on hover
-                      transition: 'background-color 0.3s ease', // Smooth transition on hover
-                      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // Subtle shadow for depth
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#0056b3')} // Darker blue on hover
-                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#007bff')} // Original blue on mouse leave
-                  >
-                    {/* {editingStudent ? "Update Alumni" : "Add Alumni"} */}
-                   
+                    <button
+                      onClick={() => handleEditClick(student)}
+                      style={{
+                        backgroundColor: '#007bff',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '5px',
+                        padding: '5px 10px',
+                        cursor: 'pointer',
+                        transition: 'background-color 0.3s',
+                      }}
+                      onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#0056b3')}
+                      onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#007bff')}
+                    >
                       Edit
                     </button>
                   </td>
@@ -296,11 +297,6 @@ const StudentTable = () => {
       ) : (
         <p>No students found.</p>
       )}
-      {/* <div className="button-container">
-        <Link to="/documents">
-          <button className="docx">Document Page</button>
-        </Link>
-      </div> */}
     </div>
   );
 };

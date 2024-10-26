@@ -76,6 +76,12 @@ const StudentAdd = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const exisitingStudent = students.find(student => student.email === userEmail)
+      if(exisitingStudent && !editingStudent){
+        setModalMessage("Your data is filled already");
+        setIsModalOpen(true);
+        return;
+      }
       if (editingStudent) {
         if (editingStudent.email === userEmail) {
           await updateDoc(doc(db, "students", editingStudent.id), {
